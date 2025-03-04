@@ -7,131 +7,203 @@
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3396/3396752.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --background: #f8fafc;
-      --text: #1e293b;
-      --card-bg: #ffffff;
-    }
+  :root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --background: #f8fafc;
+    --text: #1e293b;
+    --card-bg: #ffffff;
+  }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+  }
 
+  body {
+    background-color: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 1rem;
+    line-height: 1.5;
+  }
+
+  .container {
+    max-width: 80%;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .input-group {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .input-group::before {
+    content: "🔍";
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5;
+    z-index: 1;
+  }
+
+  input {
+    flex: 1;
+    padding: 0.75rem 1.25rem;
+    padding-left: 2.75rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    background: var(--card-bg);
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+
+  button {
+    padding: 0.5rem 1.5rem;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  button:hover {
+    background-color: var(--primary-hover);
+  }
+
+  .options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+  }
+
+  .category-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .category-title {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .category-count {
+    background: #e2e8f0;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+  }
+
+  .category-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .option-card {
+    background: var(--card-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .option-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .option-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .option-url {
+    color: #64748b;
+    font-size: 0.75rem;
+    word-break: break-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 640px) {
     body {
-      background-color: var(--background);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 2rem;
-      line-height: 1.5;
+      padding: 0.5rem;
     }
 
     .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .title {
-      font-size: 2rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
+      padding: 0 1rem;
     }
 
     .input-group {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
+      max-width: 100%;
+      flex-direction: column;
+    }
+
+    .input-group::before {
+      left: 0.75rem;
     }
 
     input {
-      flex: 1;
-      padding: 0.75rem 1rem;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border-color 0.2s;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      padding-left: 2.25rem;
     }
 
     button {
-      padding: 0.75rem 1.5rem;
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.2s;
+      width: 100%;
     }
 
-    button:hover {
-      background-color: var(--primary-hover);
+    .category-items {
+      grid-template-columns: 1fr;
     }
-
-    .options-container {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .option-card {
-      background: var(--card-bg);
-      padding: 1.25rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .option-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .option-title {
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
-
-    .option-url {
-      color: #64748b;
-      font-size: 0.875rem;
-      word-break: break-all;
-    }
-
-    .error-message {
-      color: #dc2626;
-      margin-top: 0.5rem;
-      display: none;
-    }
-
-    @media (max-width: 640px) {
-      body {
-        padding: 1rem;
-      }
-
-      .input-group {
-        flex-direction: column;
-      }
-
-      button {
-        width: 100%;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
   <div class="container">
@@ -147,9 +219,7 @@
         placeholder="Enter URL path (e.g. customers/12345)"
         autofocus
       >
-      <!--<button onclick="processInput()">Generate Links</button>--> 
     </div>
-    <!--<div id="error" class="error-message"></div>-->
 
     <div id="options" class="options-container"></div>
   </div>
@@ -170,84 +240,113 @@
       "Git": "http://localhost:8111/#/"
     };
 
+    const COLOR_MAPPINGS = [
+      { pattern: 'CRM', color: '#0056D2' },
+      { pattern: 'NIM', color: '#FF6B35' },
+      { pattern: 'NP', color: '#4CAF50' },
+      { pattern: 'SOM', color: '#008080' },
+      { pattern: 'TOne', color: '#D32F2F' },
+      { pattern: 'Git', color: '#6F42C1' }
+    ];
+    const DEFAULT_COLOR = '#CCCCCC';
+
     function extractRemain(url) {
       const index = url.indexOf("#/");
       return index === -1 ? url : url.substring(index + 2);
     }
 
-    //function showError(message) {
-    //  const errorEl = document.getElementById('error');
-    //  errorEl.textContent = message;
-    //  errorEl.style.display = 'block';
-    //}
+    function groupOptions() {
+      const groups = {};
+      
+      for (const [key, value] of Object.entries(options)) {
+        const category = key.split(/\s+/)[0];
+        if (!groups[category]) {
+          groups[category] = [];
+        }
+        groups[category].push({ key, value });
+      }
 
-    //function clearError() {
-    //  document.getElementById('error').style.display = 'none';
-    //}
+      return Object.entries(groups)
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([category, items]) => ({
+          category,
+          items: items.sort((a, b) => a.key.localeCompare(b.key))
+        }));
+    }
 
-	// Centralized color configuration
-	const COLOR_MAPPINGS = [
-	  { pattern: 'CRM', color: '#0056D2' },    // Rich blue
-	  { pattern: 'NIM', color: '#FF6B35' },    // Vibrant orange
-	  { pattern: 'NP', color: '#4CAF50' },     // Medium green
-	  { pattern: 'SOM', color: '#008080' },    // Soothing teal
-	  { pattern: 'TOne', color: '#D32F2F' },   // Bold red
-	  { pattern: 'Git', color: '#6F42C1' }     // GitHub purple
-	];
-	const DEFAULT_COLOR = '#CCCCCC';           // Light gray default
+    function createCategoryGroup(category, items) {
+      const group = document.createElement('div');
+      group.className = 'category-group';
+      
+      const colorMatch = COLOR_MAPPINGS.find(mapping => category.includes(mapping.pattern));
+      const color = colorMatch ? colorMatch.color : DEFAULT_COLOR;
 
-	function createOptionCard(key, fullUrl) {
-	  const card = document.createElement('div');
-	  card.className = 'option-card';
+      group.innerHTML = `
+        <div class="category-header">
+          <span class="category-title" style="color: ${color}">${category}</span>
+          <span class="category-count">${items.length} links</span>
+        </div>
+        <div class="category-items"></div>
+      `;
 
-	  // Find the first matching color pattern
-	  const colorMatch = COLOR_MAPPINGS.find(mapping => key.includes(mapping.pattern));
-	  const color = colorMatch ? colorMatch.color : DEFAULT_COLOR;
+      const itemsContainer = group.querySelector('.category-items');
+      items.forEach(item => {
+        itemsContainer.appendChild(createOptionCard(item.key, item.value));
+      });
 
-		card.style.borderLeft = `5px solid ${color}`; // Color indicator
-		card.innerHTML = `
-		<div class="option-title" style="color: ${color}">${key}</div>
-		<div class="option-url">${fullUrl}</div>
-		`;
-		card.onclick = () => window.open(fullUrl, '_blank');
+      return group;
+    }
 
-		return card;
-	}
+    function createOptionCard(key, fullUrl) {
+      const card = document.createElement('div');
+      card.className = 'option-card';
+
+      const colorMatch = COLOR_MAPPINGS.find(mapping => key.includes(mapping.pattern));
+      const color = colorMatch ? colorMatch.color : DEFAULT_COLOR;
+
+      card.style.borderLeft = `5px solid ${color}`;
+      card.innerHTML = `
+        <div class="option-title" style="color: ${color}">${key}</div>
+        <div class="option-url">${fullUrl}</div>
+      `;
+      card.onclick = () => window.open(fullUrl, '_blank');
+
+      return card;
+    }
 
     function processInput() {
       const userInput = document.getElementById("userInput").value.trim();
-      //if (!userInput) {
-      //  showError("Please enter a URL fragment");
-      //  return;
-      //}
-      //clearError();
-
       const remain = extractRemain(userInput);
       const optionsDiv = document.getElementById("options");
       optionsDiv.innerHTML = '';
 
-      for (const [key, base] of Object.entries(options)) {
-        var formattedBase = base.endsWith('/') ? base : `${base}/`;
-        var formattedRemain = remain.replace(/^\//, '');
-		if(formattedRemain.toLowerCase().includes("login"))  {
-			formattedRemain = 'Security/Login'
-			formattedBase = formattedBase.replace("/#/", "/");
-		}
-		
-        const fullUrl = `${formattedBase}${formattedRemain}`;
-        optionsDiv.appendChild(createOptionCard(key, fullUrl));
-      }
+      const groupedOptions = groupOptions();
+      
+      groupedOptions.forEach(({ category, items }) => {
+        const group = createCategoryGroup(category, items.map(item => ({
+          key: item.key,
+          value: getFullUrl(item.value, remain)
+        })));
+        optionsDiv.appendChild(group);
+      });
     }
-	processInput();
-    // Handle Enter key
-    //document.getElementById('userInput').addEventListener('keypress', (e) => {
-    //  if (e.key === 'Enter') processInput();
-    //});
-	
+
+    function getFullUrl(base, remain) {
+      let formattedBase = base.endsWith('/') ? base : `${base}/`;
+      let formattedRemain = remain.replace(/^\//, '');
+      
+      if (formattedRemain.toLowerCase().includes("login")) {
+        formattedRemain = 'Security/Login';
+        formattedBase = formattedBase.replace("/#/", "/");
+      }
+
+      return `${formattedBase}${formattedRemain}`;
+    }
+
+    processInput();
+
     document.getElementById('userInput').addEventListener('input', function() {
-       //this.value = this.value.trim();
-       //this.value = this.value.replace(/^\s+/g, '');
-	   processInput()
+      processInput();
     });
   </script>
 </body>
