@@ -14,7 +14,7 @@ A simple web-based **URL Redirector** that dynamically generates quick-access li
 3. Click on any generated link to open it in a new tab.
 
 ## 📺 Live Demo
-Check out the live version: **[URL Redirector Demo](https://vr-malaadin.github.io/url-redirector/)**
+Check out the live version: **[URL Redirector Demo](https://vr-malaadin.github.io/URL-Redirector/)**
 
 ## 🛠️ Installation
 To run locally, simply open the `URL Redirector.html` file in your browser.
