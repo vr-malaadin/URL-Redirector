@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Redirector</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3396/3396752.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --background: #f8fafc;
+      --text: #1e293b;
+      --card-bg: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    button {
+      padding: 0.75rem 1.5rem;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: var(--primary-hover);
+    }
+
+    .options-container {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .option-card {
+      background: var(--card-bg);
+      padding: 1.25rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .option-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .option-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .option-url {
+      color: #64748b;
+      font-size: 0.875rem;
+      word-break: break-all;
+    }
+
+    .error-message {
+      color: #dc2626;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+
+      .input-group {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">URL Redirector</h1>
+      <p>Enter your URL fragment to generate quick access links</p>
+    </div>
+
+    <div class="input-group">
+      <input 
+        type="text" 
+        id="userInput" 
+        placeholder="Enter URL path (e.g. customers/12345)"
+        autofocus
+      >
+      <!--<button onclick="processInput()">Generate Links</button>--> 
+    </div>
+    <!--<div id="error" class="error-message"></div>-->
+
+    <div id="options" class="options-container"></div>
+  </div>
+
+  <script>
+    const options = {
+      "CRM": "http://localhost:5010/#/",
+      "NIM": "http://localhost:5011/#/",
+      "NP": "http://localhost:5012/#/",
+      "CRM  8097": "http://172.30.0.10:8097/#/",
+      "CRM  8084": "http://172.30.0.10:8084/#/",
+      "NIM  8093": "http://172.30.0.10:8093/#/",
+      "SOM": "http://localhost:5015/#/",
+      "SOM 8100": "http://172.30.0.10:8100/#/",
+      "TOne": "http://localhost:5020/#/",
+      "TOne DotNet8": "http://172.30.0.54:63608/#/",
+      "TOne 8091": "http://172.30.0.10:8091/#/",
+      "Git": "http://localhost:8111/#/"
+    };
+
+    function extractRemain(url) {
+      const index = url.indexOf("#/");
+      return index === -1 ? url : url.substring(index + 2);
+    }
+
+    //function showError(message) {
+    //  const errorEl = document.getElementById('error');
+    //  errorEl.textContent = message;
+    //  errorEl.style.display = 'block';
+    //}
+
+    //function clearError() {
+    //  document.getElementById('error').style.display = 'none';
+    //}
+
+	// Centralized color configuration
+	const COLOR_MAPPINGS = [
+	  { pattern: 'CRM', color: '#0056D2' },    // Rich blue
+	  { pattern: 'NIM', color: '#FF6B35' },    // Vibrant orange
+	  { pattern: 'NP', color: '#4CAF50' },     // Medium green
+	  { pattern: 'SOM', color: '#008080' },    // Soothing teal
+	  { pattern: 'TOne', color: '#D32F2F' },   // Bold red
+	  { pattern: 'Git', color: '#6F42C1' }     // GitHub purple
+	];
+	const DEFAULT_COLOR = '#CCCCCC';           // Light gray default
+
+	function createOptionCard(key, fullUrl) {
+	  const card = document.createElement('div');
+	  card.className = 'option-card';
+
+	  // Find the first matching color pattern
+	  const colorMatch = COLOR_MAPPINGS.find(mapping => key.includes(mapping.pattern));
+	  const color = colorMatch ? colorMatch.color : DEFAULT_COLOR;
+
+		card.style.borderLeft = `5px solid ${color}`; // Color indicator
+		card.innerHTML = `
+		<div class="option-title" style="color: ${color}">${key}</div>
+		<div class="option-url">${fullUrl}</div>
+		`;
+		card.onclick = () => window.open(fullUrl, '_blank');
+
+		return card;
+	}
+
+    function processInput() {
+      const userInput = document.getElementById("userInput").value.trim();
+      //if (!userInput) {
+      //  showError("Please enter a URL fragment");
+      //  return;
+      //}
+      //clearError();
+
+      const remain = extractRemain(userInput);
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = '';
+
+      for (const [key, base] of Object.entries(options)) {
+        var formattedBase = base.endsWith('/') ? base : `${base}/`;
+        var formattedRemain = remain.replace(/^\//, '');
+		if(formattedRemain.toLowerCase().includes("login"))  {
+			formattedRemain = 'Security/Login'
+			formattedBase = formattedBase.replace("/#/", "/");
+		}
+		
+        const fullUrl = `${formattedBase}${formattedRemain}`;
+        optionsDiv.appendChild(createOptionCard(key, fullUrl));
+      }
+    }
+	processInput();
+    // Handle Enter key
+    //document.getElementById('userInput').addEventListener('keypress', (e) => {
+    //  if (e.key === 'Enter') processInput();
+    //});
+	
+    document.getElementById('userInput').addEventListener('input', function() {
+       //this.value = this.value.trim();
+       //this.value = this.value.replace(/^\s+/g, '');
+	   processInput()
+    });
+  </script>
+</body>
+</html>
