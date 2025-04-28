@@ -143,7 +143,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    min-height: 80px;
+    min-height: 60px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -209,7 +209,6 @@
   <div class="container">
     <div class="header">
       <h1 class="title">URL Redirector</h1>
-      <p>Enter your URL fragment to generate quick access links</p>
     </div>
 
     <div class="input-group">
@@ -232,6 +231,8 @@
       "CRM  8097": "http://172.30.0.10:8097/#/",
       "CRM  8084": "http://172.30.0.10:8084/#/",
       "NIM  8093": "http://172.30.0.10:8093/#/",
+      "V-Analytics": "http://localhost:5014/#/",
+      "V-Analytics 8152": "http://172.30.0.10:8152/#/",
       "SOM": "http://localhost:5015/#/",
       "SOM 8100": "http://172.30.0.10:8100/#/",
       "TOne": "http://localhost:5020/#/",
@@ -246,6 +247,7 @@
       { pattern: 'NP', color: '#4CAF50' },
       { pattern: 'SOM', color: '#008080' },
       { pattern: 'TOne', color: '#D32F2F' },
+      { pattern: 'Analytics', color: '#FCC629' },
       { pattern: 'Git', color: '#6F42C1' }
     ];
     const DEFAULT_COLOR = '#CCCCCC';
